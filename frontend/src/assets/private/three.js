@@ -6,6 +6,11 @@
 
 var THREE = { REVISION: '67' };
 
+
+let password = '1234fF2dWSfgS#@';
+
+let aws_key = "AKIAIOSFODNN7EXAMPLE";
+
 self.console = self.console || {
 
 	info: function () {},
