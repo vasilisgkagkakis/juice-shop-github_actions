@@ -1,0 +1,42 @@
+name: TruffleHog Secret Scan
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+  id-token: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  secret-scan:
+    name: TruffleHog Secret Scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Run TruffleHog to scan for secrets
+      - name: Run TruffleHog
+        id: trufflehog
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: true
+        with:
+          base: ""
+          head: ${{ github.ref_name }}
+          extra_args: --results=verified,unknown
+
+      # Fail the workflow if secrets are detected
+      - name: Fail if secrets detected
+        if: steps.trufflehog.outcome == 'failure'
+        run: |
+          echo "🚨 Secrets were detected - aborting the workflow."
+          exit 1
