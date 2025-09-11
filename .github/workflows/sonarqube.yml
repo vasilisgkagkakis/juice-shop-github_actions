@@ -23,7 +23,7 @@ jobs:
           args: >
             -Dsonar.projectKey=vasilisgkagkakis_juice-shop-github_actions
             -Dsonar.organization=trelobill
-            -Dsonar.sources=frontend,config,uploads,ftp
+            -Dsonar.sources=.
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.md
       - name: SonarQube Quality Gate
         uses: SonarSource/sonarqube-quality-gate-action@v1
