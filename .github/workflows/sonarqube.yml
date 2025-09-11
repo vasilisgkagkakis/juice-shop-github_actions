@@ -21,8 +21,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=dotmak_safe-programming
-            -Dsonar.organization=dotmak
+            -Dsonar.projectKey=vasilisgkagkakis_juice-shop-github_actions
+            -Dsonar.organization=trelobill
             -Dsonar.sources=frontend,config,uploads,ftp
             -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.md
       - name: SonarQube Quality Gate
