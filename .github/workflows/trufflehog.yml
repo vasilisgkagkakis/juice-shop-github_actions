@@ -1,4 +1,4 @@
-name: TruffleHog Secret Scan
+name: TruffleHog Scan
 
 on:
   push:
@@ -18,14 +18,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🛎️ Starting Secret Scan
-        run: echo "::group::🔍 Starting TruffleHog Secret Scan"
-
+      # Checkout the repository
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      # Run TruffleHog to scan for secrets
       - name: Run TruffleHog
         id: trufflehog
         uses: trufflesecurity/trufflehog@main
@@ -35,19 +34,9 @@ jobs:
           head: ${{ github.ref_name }}
           extra_args: --results=verified,unknown
 
-      - name: 📋 TruffleHog Scan Results
-        run: |
-          echo "::endgroup::"
-          echo "::group::📋 TruffleHog Results"
-          if [ "${{ steps.trufflehog.outcome }}" == "failure" ]; then
-            echo "🚨 Secrets detected! Please review the findings above."
-          else
-            echo "✅ No secrets detected. Good job!"
-          fi
-          echo "::endgroup::"
-
+      # Fail the workflow if secrets are detected
       - name: Fail if secrets detected
         if: steps.trufflehog.outcome == 'failure'
         run: |
-          echo "🚨 Workflow failed due to detected secrets."
+          echo "🚨 Secrets were detected - aborting the workflow."
           exit 1
