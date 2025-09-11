@@ -5,19 +5,44 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  workflow_dispatch: {}
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
-  semgrep:
-    name: semgrep/ci
+  semgrep-scan:
+    name: Semgrep Code Scanning
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     env:
       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-    container:
-      image: semgrep/semgrep
-    if: (github.actor != 'dependabot[bot]')
+    if: github.actor != 'dependabot[bot]'
+
     steps:
-      - uses: actions/checkout@v4
-      - run: semgrep ci --no-suppress-errors
+      # Start log group
+      - name: 🛎️ Starting Semgrep Scan
+        run: echo "::group::🔍 Starting Semgrep Code Scan"
+
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Run Semgrep scan
+      - name: Run Semgrep
+        id: semgrep
+        run: |
+          semgrep ci --no-suppress-errors
+
+      # End log group and summarize results
+      - name: 📋 Semgrep Scan Results
+        run: |
+          echo "::endgroup::"
+          echo "::group::📋 Semgrep Results"
+          if [ $? -eq 0 ]; then
+            echo "✅ No issues detected by Semgrep. Good job!"
+          else
+            echo "🚨 Issues detected by Semgrep! Please review the findings above."
+          fi
+          echo "::endgroup::"
