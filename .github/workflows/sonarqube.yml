@@ -1,4 +1,4 @@
-name: SonarQube Scan
+name: SonarQube
 
 on:
   push:
@@ -11,23 +11,21 @@ jobs:
   sonarqube:
     name: SonarQube
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
+          fetch-depth: 0
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v2
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=dotmak_safe-programming
+            -Dsonar.organization=dotmak
+            -Dsonar.sources=frontend,config,uploads,ftp
+            -Dsonar.exclusions=**/node_modules/**,**/dist/**,**/build/**,**/coverage/**,**/*.md
+      - name: SonarQube Quality Gate
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
