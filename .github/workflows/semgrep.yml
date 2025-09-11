@@ -29,6 +29,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Install Semgrep
+      - name: Install Semgrep
+        run: pip install semgrep
+
       # Run Semgrep scan
       - name: Run Semgrep
         id: semgrep
