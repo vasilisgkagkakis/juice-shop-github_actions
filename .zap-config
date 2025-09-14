@@ -1,4 +1,12 @@
 rules:
   - id: 10095	FAIL	Backup File Disclosure
-  - id: 40040	WARN	CORS Misconfiguration
-  # Add more rules as needed, or use ZAP's default config and only override criticals
+  - id: 40040	FAIL	CORS Misconfiguration
+  - id: 10017	FAIL	Cross-Domain JavaScript Source File Inclusion
+  - id: 10038	FAIL	Content Security Policy (CSP) Header Not Set
+  - id: 10063	FAIL	Deprecated Feature Policy Header Set
+  - id: 10096	FAIL	Timestamp Disclosure - Unix
+  - id: 10098	FAIL	Cross-Domain Misconfiguration
+  - id: 10110	FAIL	Dangerous JS Functions
+  - id: 40035	FAIL	Hidden File Found
+  - id: 40038	FAIL	Bypassing 403
+  - id: 90004	FAIL	Insufficient Site Isolation Against Spectre Vulnerability
