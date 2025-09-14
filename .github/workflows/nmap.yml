@@ -27,8 +27,16 @@ jobs:
             sleep 5
           done
 
-      - name: Scan with nmap
-        uses: thereisnotime/action-nmap@v1.1
+      - name: Install nmap
+        run: sudo apt-get update && sudo apt-get install -y nmap
+
+      - name: Scan juice shop on host
+        run: |
+          mkdir -p scan-results
+          nmap -Pn -sT -p 3000 127.0.0.1 -sV --script vuln -oA scan-results/juice-nmap
+
+      - name: Upload nmap report artifact
+        uses: actions/upload-artifact@v4
         with:
-          target: "localhost"
-          additional_args: "-p 1-65535 -sV -O -sC -Pn -v"
+          name: nmap-report
+          path: scan-results/*
