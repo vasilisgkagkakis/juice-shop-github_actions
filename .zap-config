@@ -1,6 +1,4 @@
 rules:
-  - id: 10095  # Example: Backup File Disclosure
-    action: FAIL
-  - id: 40040  # Example: CORS Misconfiguration
-    action: WARN
+  - id: 10095	FAIL	Backup File Disclosure
+  - id: 40040	WARN	CORS Misconfiguration
   # Add more rules as needed, or use ZAP's default config and only override criticals
