@@ -34,7 +34,8 @@ jobs:
           sqlmap -u "http://localhost:3000/rest/user/login" \
             --method POST \
             --data '{"email":"test@test.com","password":"test123"}' \
-            --batch --output-dir=scan-results/sqlmap
+            --headers="Content-Type: application/json" \
+            --batch --output-dir=scan-results/sqlmap --ignore-code=401
 
       - name: Upload sqlmap report artifact
         uses: actions/upload-artifact@v4
