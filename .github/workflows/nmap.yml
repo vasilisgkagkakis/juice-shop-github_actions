@@ -3,7 +3,7 @@ name: Build, Test & Nmap Scan
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build_and_scan:
