@@ -39,7 +39,7 @@ jobs:
           additional_args: "-p 3000 -sV -Pn"
 
       - name: Upload nmap report artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: nmap-report
           path: reports/net/*
