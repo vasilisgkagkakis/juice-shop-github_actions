@@ -30,6 +30,7 @@ jobs:
 
       - name: Run sqlmap scan on login API
         run: |
+          set -e
           mkdir -p scan-results/sqlmap
           sqlmap -u "http://localhost:3000/rest/user/login" \
             --method POST \
