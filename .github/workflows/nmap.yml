@@ -15,9 +15,9 @@ jobs:
           - 3000:3000
         options: >-
           --health-cmd="curl --fail http://localhost:3000 || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+          --health-interval=20s
+          --health-timeout=10s
+          --health-retries=15
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
