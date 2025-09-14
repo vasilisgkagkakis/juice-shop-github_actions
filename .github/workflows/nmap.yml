@@ -32,9 +32,3 @@ jobs:
         with:
           target: "localhost"
           additional_args: "-p 1-65535 -sV -O -sC -Pn -v"
-
-      - name: Upload nmap report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: nmap-report
-          path: reports/net/*
