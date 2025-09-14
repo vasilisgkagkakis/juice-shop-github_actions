@@ -1,0 +1,45 @@
+name: Build, Test & Nmap Scan
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_scan:
+    runs-on: ubuntu-latest
+    services:
+      juice-shop:
+        image: bkimminich/juice-shop
+        ports:
+          - 3000:3000
+        options: >-
+          --health-cmd="curl --fail http://localhost:3000 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Wait for Juice Shop to be ready
+        run: |
+          for i in {1..10}; do
+            if curl --silent http://localhost:3000; then
+              echo "Juice Shop is up"
+              break
+            fi
+            sleep 5
+          done
+
+      - name: Scan with nmap
+        uses: thereisnotime/action-nmap@v1.1
+        with:
+          target: "localhost"
+          additional_args: "-p 3000 -sV -Pn"
+
+      - name: Upload nmap report artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: nmap-report
+          path: reports/net/*
