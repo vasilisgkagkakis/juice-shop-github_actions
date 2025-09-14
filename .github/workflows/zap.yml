@@ -28,9 +28,6 @@ jobs:
             sleep 5
           done
 
-      - name: List files for debug
-        run: ls -la
-
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
