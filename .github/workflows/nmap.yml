@@ -27,6 +27,10 @@ jobs:
             sleep 5
           done
 
+      - name: Debug Juice Shop status
+        run: |
+          curl -v http://localhost:3000 || echo "Juice Shop not responding"
+
       - name: Scan with nmap
         uses: thereisnotime/action-nmap@v1.1
         with:
