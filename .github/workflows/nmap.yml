@@ -28,9 +28,10 @@ jobs:
           done
 
       - name: Scan with nmap
-        run: |
-          mkdir -p reports/net
-          nmap -p 1-65535 -sV -O -sC -Pn -v localhost -oN reports/net/nmap.txt
+        uses: thereisnotime/action-nmap@v1.1
+        with:
+          target: "localhost"
+          additional_args: "-p 1-65535 -sV -O -sC -Pn -v"
 
       - name: Upload nmap report artifact
         uses: actions/upload-artifact@v4
