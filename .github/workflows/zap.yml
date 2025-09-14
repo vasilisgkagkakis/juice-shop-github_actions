@@ -1,0 +1,39 @@
+name: ZAP Full Scan
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    services:
+      juice-shop:
+        image: bkimminich/juice-shop
+        ports:
+          - 3000:3000
+    steps:
+      - name: Wait for Juice Shop to be ready
+        run: |
+          for i in {1..15}; do
+            if curl --silent http://localhost:3000; then
+              echo "Juice Shop is up"
+              break
+            fi
+            sleep 5
+          done
+
+      - name: ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.10.0
+        with:
+          target: 'http://localhost:3000'
+          allow_issue_writing: false
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload ZAP report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: report_html.html
